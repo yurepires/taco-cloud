@@ -1,16 +1,15 @@
 package sia.tacocloud.controllers;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import sia.tacocloud.model.Ingredient;
-import sia.tacocloud.model.Ingredient.Type;
-import sia.tacocloud.model.Taco;
-import sia.tacocloud.model.TacoOrder;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+import sia.tacocloud.models.Ingredient;
+import sia.tacocloud.models.Ingredient.Type;
+import sia.tacocloud.models.Taco;
+import sia.tacocloud.models.TacoOrder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -64,6 +63,21 @@ public class DesignTacoController {
     @GetMapping
     public String showDesignForm() {
         return "design";
+    }
+
+    // A anotação valid executa a validação no objeto Taco enviado
+    // antes que o métod processTaco() seja chamado.
+    @PostMapping
+    public String processTaco(@Valid Taco taco, Errors errors, @ModelAttribute TacoOrder tacoOrder) {
+
+        if (errors.hasErrors()) {
+            return "design";
+        }
+
+        tacoOrder.addTaco(taco);
+        log.info("Processing taco: {}", taco);
+
+        return "redirect:/orders/current";
     }
 
     // Filtra a lista de ingredientes e retorna apenas aqueles que pertencem ao tipo informado
