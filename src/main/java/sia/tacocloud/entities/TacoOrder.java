@@ -1,4 +1,4 @@
-package sia.tacocloud.models;
+package sia.tacocloud.entities;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -6,11 +6,16 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class TacoOrder {
+
+    private Long id;
+
+    private LocalDateTime placedAt;
 
     @NotBlank(message = "Delivery mame is required")
     private String deliveryName;
