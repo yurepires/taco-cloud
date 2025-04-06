@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Taco Cloud</title>
+</head>
+    <body>
+        <h1>Design your taco!</h1>
+        <img th:src="@{/images/taco-cloud.png}">
+        <form method="POST" th:action="@{/logout}">
+            <input type="submit" value="Logout"/>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+<!-- Não é necessário por a linha acima para corrigir a vulnerabilidade de CSRF no thymeleaf ou JSP, se o form tiver algum atributo com th já funciona (pág. 161)   -->
+        </form>
+        <form method="POST" th:object="${taco}">
+            <div class="grid">
+                <div class="ingredient-group" id="wraps">
+                    <h3>Designate your wrap:</h3>
+                    <div th:each="ingredient: ${wrap}">
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}">
+                        <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                    </div>
+                </div>
+
+                <div class="ingredient-group" id="proteins">
+                    <h3>Pick your protein:</h3>
+                    <div th:each="ingredient: ${protein}">
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}">
+                        <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                    </div>
+                </div>
+
+                <div class="ingredient-group" id="cheeses">
+                    <h3>Choose your cheese:</h3>
+                    <div th:each="ingredient: ${cheese}">
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}">
+                        <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                    </div>
+                </div>
+
+                <div class="ingredient-group" id="veggies">
+                    <h3>Determine your veggies:</h3>
+                    <div th:each="ingredient: ${veggies}">
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}">
+                        <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                    </div>
+                </div>
+
+                <div class="ingredient-group" id="sauces">
+                    <h3>Select your sauce:</h3>
+                    <div th:each="ingredient: ${sauce}">
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}">
+                        <span th:text="${ingredient.name}">INGREDIENT</span><br/>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <span class="validationError" th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}">Tacos error</span>
+            </div>
+
+            <div>
+                <h3>Name your taco creation:</h3>
+                <input type="text" th:field="*{name}"/>
+                <br/>
+                <button type="submit">Submit Your Taco</button>
+            </div>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+        </form>
+    </body>
+</html>
